@@ -2,6 +2,8 @@
   "expo": {
     "name": "companypro",
     "slug": "companypro",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -22,7 +24,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.coding.gradpro"
+    },
+    "android": {
+      "package": "com.coding.gradpro",
+      "config": {
+         "googleMaps": { "apiKey": "AIzaSyDQelB9Nish1qJBMCMsZAkZQE3PoPaYN4Q" }   
+      }
+   }
   }
 }
+
