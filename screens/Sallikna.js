@@ -21,8 +21,11 @@ import Home from './Home';
 import Join_our_team from './Join_our_team';
 import Profile from './Profile';
 import Logout from './Logout';
+import Home2 from './Home2';
+import OurMap from './OurMap';
 //statistics  like manage vehicles
 import { theme } from "../constants";
+
 //Navigation Drawer Structure for all screen
 class NavigationDrawerStructure extends Component {
 
@@ -58,7 +61,7 @@ const FirstActivity_StackNavigator = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Home',
     //  headerRight:<TouchableOpacity onPress={() => this.call()}></TouchableOpacity>,
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerLeft:() => <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
         height: theme.sizes.base * 5,
         backgroundColor: '#8875ba',
@@ -71,13 +74,13 @@ const FirstActivity_StackNavigator = createStackNavigator({
 });
 
 //Stack Navigator for Second Option of Navigation Drawer
-/* const Screen2_StackNavigator = createStackNavigator({
+ const Screen2_StackNavigator = createStackNavigator({
   //All the screen from the Screen2 will be indexed here
   Second: {
-    screen: Services,
+    screen: Home2,
     navigationOptions: ({ navigation }) => ({
-      title: 'Services',
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      title: 'New Requests',
+      headerLeft:  () => <NavigationDrawerStructure navigationProps={navigation} />,
 
       headerStyle: {
         height: theme.sizes.base * 5,
@@ -88,15 +91,15 @@ const FirstActivity_StackNavigator = createStackNavigator({
     }),
   },
 });
- */
+ 
 //Stack Navigator for Third Option of Navigation Drawer
-/* const Screen3_StackNavigator = createStackNavigator({
+ const Screen3_StackNavigator = createStackNavigator({
   //All the screen from the Screen3 will be indexed here
   Third: {
-    screen: Manage_vehicle,
+    screen: OurMap,
     navigationOptions: ({ navigation }) => ({
-      title: 'Manage_vehicle',
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      title: 'Map',
+      headerLeft: () => <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
         height: theme.sizes.base * 5,
         backgroundColor: '#8875ba',
@@ -105,14 +108,14 @@ const FirstActivity_StackNavigator = createStackNavigator({
     }),
   },
 });
- */
+ 
 const Screen4_StackNavigator = createStackNavigator({
   //All the screen from the Screen3 will be indexed here
   Fourth: {
     screen: Profile,
     navigationOptions: ({ navigation }) => ({
       title: 'Change Password ',
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerLeft: () => <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
         height: theme.sizes.base * 5,
         backgroundColor: '#8875ba',
@@ -127,7 +130,7 @@ const Screen5_StackNavigator = createStackNavigator({
     screen: Join_our_team,
     navigationOptions: ({ navigation }) => ({
       title: 'Join our team',
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerLeft: () => <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
         height: theme.sizes.base * 5,
         backgroundColor: '#8875ba',
@@ -143,7 +146,7 @@ const Screen5_StackNavigator = createStackNavigator({
     screen: Logout,
     navigationOptions: ({ navigation }) => ({
       title: 'Logout',
-      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerLeft:  () =><NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
         height: theme.sizes.base * 5,
         backgroundColor: '#8875ba',
@@ -165,21 +168,21 @@ const DrawerNavigatorExample = createDrawerNavigator({
     },
   },
 
- /*  Services: {
+  Home2: {
     //Title
     screen: Screen2_StackNavigator,
     navigationOptions: {
-      drawerLabel: 'Services',
+      drawerLabel: 'New Requests',
     },
   }, 
   
-  Manage_vehicle: {
+  OurMap: {
     //Title
     screen: Screen3_StackNavigator,
     navigationOptions: {
-      drawerLabel: 'Manage_vehicle',
+      drawerLabel: 'Map',
     },
-  }, */
+  }, 
   Profile: {
     //Title
     screen: Screen4_StackNavigator,

@@ -108,6 +108,8 @@ class Welcome extends Component {
             </Text>
           </Button>
          
+         
+         
      
 
         </Block>

@@ -15,48 +15,44 @@ import { theme } from "../constants";
 
 export default class Forgot extends Component {
   state = {
-    email: global.Email,
+    email: '',
     errors: [],
     loading: false
   };
 
   handleForgot() {
-    const { navigation } = this.props;
-    const { email } = this.state;
-    const errors = [];
-
-    Keyboard.dismiss();
-    this.setState({ loading: true });
-
-    // check with backend API or with some static data
-    /* if (email !== VALID_EMAIL) {
-      errors.push("email");
-    } */
-
-    this.setState({ errors, loading: false });
-
-    if (!errors.length) {
-      Alert.alert(
-        "Password sent!",
-        "Please check you email.",
-        [
-          {
-            text: "OK",
-            onPress: () => {
-              navigation.navigate("Forgot");
-            }
-          }
-        ],
-        { cancelable: false }
-      );
-    } else {
-      Alert.alert(
-        "Error",
-        "Please check you Email address.",
-        [{ text: "Try again" }],
-        { cancelable: false }
-      );
-    }
+const {email}=this.state;
+    return fetch('http://192.168.43.137/Server/getpass.php', {
+      method: 'POST',
+       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }, 
+      body: JSON.stringify({
+    
+     ///   name: this.state.username,
+        email: email,
+       // Done :  global.Done,
+    
+     ////   password: this.state.password 
+    
+      })
+    
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+         
+          isLoading: false,
+          dataSource: responseJson
+        }, function() {
+          // In this block you can do something with new state.
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      
   }
 
   render() {
@@ -73,7 +69,7 @@ export default class Forgot extends Component {
                 </Text>
 
           <Text h1 bold>
-            Forgot
+            Get Password
           </Text>
           <Block middle>
             <Input
@@ -81,7 +77,7 @@ export default class Forgot extends Component {
               error={hasErrors("email")}
               style={[styles.input, hasErrors("email")]}
               defaultValue={this.state.email}
-              onChangeText={text => this.setState({ email: text })}
+              onChangeText={email => this.setState({ email: email })}
             />
              <Text bold white center>
              {"\n"} {"\n"}
@@ -92,21 +88,12 @@ export default class Forgot extends Component {
                 <ActivityIndicator size="small" color="white" />
               ) : (
                 <Text bold white center>
-                  Forgot
+                  Get
                 </Text>
               )}
             </Button>
 
-            <Button onPress={() => navigation.navigate("Welcome")}>
-              <Text
-                gray
-                caption
-                center
-                style={{ textDecorationLine: "underline" }}
-              >
-                Back to welcome page
-              </Text>
-            </Button>
+           <text>  dataSource </text> 
           </Block>
         </Block>
       </KeyboardAvoidingView>

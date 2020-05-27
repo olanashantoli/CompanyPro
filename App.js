@@ -1,4 +1,4 @@
-import React from "react";
+import React , {Component}  from "react";
 import { StyleSheet } from "react-native";
 
 import { AppLoading } from "expo";
@@ -7,6 +7,7 @@ import { Asset } from "expo-asset";
 import Navigation from "./navigation";
 import { Block } from "./components";
 import { MapView } from "expo";
+import { Notifications } from 'expo';
 // import all used images
 const images = [
   require("./assets/icons/back.png"),
@@ -17,6 +18,9 @@ const images = [
 ];
 
 export default class App extends React.Component {
+
+
+
   state = {
     isLoadingComplete: false
   };
@@ -33,6 +37,7 @@ export default class App extends React.Component {
     return Promise.all(cacheImages);
   };
 
+  
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (

@@ -11,8 +11,7 @@ import {
   ScrollView,
   AsyncStorage,
   RefreshControl,
-  TouchableOpacity,
-   Vibration, 
+  TouchableOpacity
 } from "react-native";
 
 import { Button, Block, Input,Text } from "../components";
@@ -22,9 +21,9 @@ import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
 
+const t='';
 
-
-export default class Home extends Component {////////appreg
+export default class Home2 extends Component {////////appreg
  
    constructor(props) {
     super(props);
@@ -37,54 +36,18 @@ export default class Home extends Component {////////appreg
       isLoading: true,
       isRefreshing: false, //for pull to refresh
       token:'',
-      expoPushToken: '',
+     // expoPushToken: '',
       notification: {},
     }
    
   }
 
-/*   registerForPushNotificationsAsync = async () => {
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-      }
-      token = await Notifications.getExpoPushTokenAsync();
-      console.log(token);
-      this.setState({ expoPushToken: token });//SAVE IN DB
-    } else {
-      alert('Must use physical device for Push Notifications');
-    }
-
-    if (Platform.OS === 'android') {
-      Notifications.createChannelAndroidAsync('default', {
-        name: 'default',
-        sound: true,
-        priority: 'max',
-        vibrate: [0, 250, 250, 250],
-      });
-    }
-  };
-
-  
-  _handleNotification = notification => {
-    Vibration.vibrate();
-    console.log(notification);
-    this.setState({ notification: notification });
-  };
- */
   sendPushNotification = async () => {
     const message = {
-      to: this.state.expoPushToken,//ETOKEN
+      to: t,//ETOKEN
       sound: 'default',
-      title: 'New Requese ',
-      body: 'please check  the New Requests Page!',
+      title: 'ACCEPTED ',
+      body: 'just wait!',
       data: { data: 'goes here' },
       _displayInForeground: true,
     };
@@ -99,10 +62,47 @@ export default class Home extends Component {////////appreg
     });
   };
 
-   handleDone (ID) {
+  gettok(ID){
+    fetch('http://192.168.43.137/Server/tok1.php', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+       email: global.Email,
+       ID : ID,
+      
+      })
+     
+    }).then((response) => response.json())
+          .then((responseJson) => {
+    
+            this.setState({
+         
+              isLoading: false,
+              expoPushToken: responseJson,
+              t:responseJson
+            }, function() {
+              // In this block you can do something with new state.
+            });
+            console.log("ooooooooooooooooooooo");
+       console.log(responseJson);
+         }).catch((error) => {
+           Alert.alert(
+             "Error in json",
+             "Please check you Email address.",
+             [{ text: "Try again" }],
+             { cancelable: false }
+           );
+           console.error(error);
+         }); 
+  }
 
-  // this.sendPushNotification();
-   fetch('http://192.168.43.137/Server/Company_Done.php', {
+   handleAccept(ID) {
+    this.gettok(ID);//add ID
+
+   fetch('http://192.168.43.137/Server/Company_Accept.php', {
      method: 'POST',
      headers: {
        'Accept': 'application/json',
@@ -126,16 +126,17 @@ export default class Home extends Component {////////appreg
             { cancelable: false }
           );
           console.error(error);
-        });
+        }); 
       
-   
+        
+        this.sendPushNotification();
       } 
 
       
-   handleNotDone (ID) {
+   handleDeny (ID) {
 
-   
-    fetch('http://192.168.43.137/Server/Company_NotDone.php', {
+    
+    fetch('http://192.168.43.137/Server/Company_Deny.php', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -160,7 +161,7 @@ export default class Home extends Component {////////appreg
            );
            console.error(error);
          });
-       
+        
     
        } 
 
@@ -168,8 +169,8 @@ export default class Home extends Component {////////appreg
    
  // Alert.alert(Vehicle);
  Alert.alert(
-  'Requist State ',
-  'Is Done ?',
+  ' New Requist  ',
+  'Do You Want To Accept This Requist ?',
   [
     {
       text: 'Cancel',
@@ -177,12 +178,12 @@ export default class Home extends Component {////////appreg
       style: 'cancel'
     },
     {
-      text: 'Not Done',
-      onPress: () =>this.handleNotDone(ID) ,
+      text: 'Deny',
+      onPress: () =>this.handleDeny(ID) ,
       
     },
-    { text: 'Done',
-     onPress: () =>this.handleDone(ID) }
+    { text: 'Accept',
+     onPress: () =>this.handleAccept(ID) }
   ],
   { cancelable: false }
 );
@@ -190,11 +191,12 @@ export default class Home extends Component {////////appreg
   }
  
   componentDidMount() {
+  
     //const { done }  ;
   
-   // this.registerForPushNotificationsAsync();
+  //  this.registerForPushNotificationsAsync();
    // this._notificationSubscription = Notifications.addListener(this._handleNotification);
-    return fetch('http://192.168.43.137/Server/Home-Company.php', {
+    return fetch('http://192.168.43.137/Server/new.php', {
       method: 'POST',
        headers: {
         'Accept': 'application/json',
@@ -230,7 +232,7 @@ export default class Home extends Component {////////appreg
   onRefresh() {
     this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
    
-    return fetch('http://192.168.43.137/Server/Home-Company.php', {
+    return fetch('http://192.168.43.137/Server/new.php', {
       method: 'POST',
        headers: {
         'Accept': 'application/json',
@@ -335,9 +337,7 @@ export default class Home extends Component {////////appreg
             </TouchableOpacity>
            </View>
               }
-              keyExtractor = {(item, index) => index.toString()}
-              //   keyExtractor={(item, INDEX) => item.toString()}
-        // keyExtractor={   (item, index) => index}
+            keyExtractor={(item) => item.toString()}
             extraData={this.state}
             refreshControl={
               <RefreshControl

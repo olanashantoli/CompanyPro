@@ -132,7 +132,7 @@ export default class Profile extends Component {
   
            
               <Input
-               secure
+             //  secure
                 label=" New Password"
                 error={hasErrors("password")}
                 style={[styles.input, hasErrors("password")]}
@@ -141,7 +141,7 @@ export default class Profile extends Component {
               />
 
                <Input
-                secure
+              //  secure
                 label="Confirm Password"
                 error={hasErrors("confirm_password")}
                 style={[styles.input, hasErrors("confirm_password")]}
