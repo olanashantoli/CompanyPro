@@ -170,45 +170,22 @@ componentWillUnmount() {
     
     >
   
-         <Marker coordinate = {{latitude : 32.455 ,longitude:35.3}}
+         <Marker coordinate = {{latitude : 32.520400 ,longitude:35.104000}}
         
          title={"company x"}
          description={"BMW company"}/> 
 
-         <Marker coordinate = {{latitude : 32.6 ,longitude:35.3}}
+         <Marker coordinate = {{latitude : 32.56 ,longitude:35.3}}
          pinColor = {"purple"} // any color
-         title={"company y"}
-         description={"for all vehicles"}/> 
+         title={"user 1"}
+         description={"Break_Down"}/> 
 
-        <Marker coordinate = {{latitude : 32 ,longitude:35.1}}
+        <Marker coordinate = {{latitude : 32.3988 ,longitude:35.1}}
          pinColor = {"purple"} // any color
-         title={"car workshop"}
-         description={"for all vehicles"}/> 
+         title={"user2"}
+         description={"recovery"}/> 
 
-         <Marker coordinate = {{latitude : 32.445 ,longitude:35.21}}
-         pinColor = {"purple"} // any color
-         title={"ola walaa co"}
-         description={"for all vehicles"}/> 
-
-          <Marker coordinate = {{latitude : 32.3 ,longitude:35.3}}
-         pinColor = {"purple"} // any color
-         title={" Petrol station"}
-         description={""}/> 
-
-        <Marker coordinate = {{latitude : 32 ,longitude:35.35}}
-         pinColor = {"purple"} // any color
-         title={"car workshop"}
-         description={"for all vehicles"}/> 
-
-          <Marker coordinate = {{latitude : 32.324 ,longitude:35.005}}
-         pinColor = {"purple"} // any color
-         title={"car workshop2"}
-         description={"for all vehicles"}/> 
-
-          <Marker coordinate = {{latitude : 32.4 ,longitude:35.35}}
-         pinColor = {"purple"} // any color
-         title={"car workshop44"}
-         description={"for all vehicles"}/> 
+       
  
     </MapView> 
 

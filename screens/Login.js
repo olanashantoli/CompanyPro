@@ -1,4 +1,4 @@
-import React,  {useEffect ,  Component } from "react";
+import React,  {  Component } from "react";
 import {
   Alert,
   ActivityIndicator,
@@ -25,7 +25,7 @@ export default class Login extends Component {
     super(props);
     this.state={email:'', password:'', errors: [],
     isLoading: true,
-    token:'',
+    //token:'',
     expoPushToken: '',
     notification: {},
   };
@@ -48,6 +48,7 @@ export default class Login extends Component {
       
       this.setState({ expoPushToken: token });
       console.log(token);
+      //===console.log(this.state.expoPushToken);
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -67,7 +68,7 @@ export default class Login extends Component {
    
   }
 
-  _handleNotification = notification => {
+  _handleNotification = notification => { //rec noti
     Vibration.vibrate();
     console.log(notification);
     this.setState({ notification: notification });
@@ -99,7 +100,7 @@ export default class Login extends Component {
           .then((responseJson) => {
     
     // Showing response message coming from server after inserting records.
-            Alert.alert(responseJson);
+           // Alert.alert(responseJson); // اللي رجع من  php 
         
           }).catch((error) => {
             console.error(error);
@@ -157,8 +158,8 @@ export default class Login extends Component {
          });
 
         
-         this.registerForPushNotificationsAsync();
-    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+    this.registerForPushNotificationsAsync();//save token
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);// rec noti
     this.st();
     
      }
@@ -232,16 +233,7 @@ export default class Login extends Component {
               </Text>
             </Button> */}
             
-           {/*  <Button onPress={() => navigation.navigate("Welcome")}>
-              <Text
-                gray
-                caption
-                center
-                style={{ textDecorationLine: "underline" }}
-              >
-                Back to welcome page
-              </Text>
-            </Button> */}
+         
             </ScrollView>
           </Block>
         </Block>
@@ -251,81 +243,7 @@ export default class Login extends Component {
   }
  //GET PASS INSTED OF FORGOT 
   
-/*   handleLogin(email,password) {
-    // const { navigation } = this.props;
-    Alert.alert(
-      "fun",
-      "Please check you Email address.",
-      [{ text: "Try again" }],
-      { cancelable: false }
-    );
-     
-       fetch('http://192.168.100.113:3000/cusomer/'+email+'/'+password, {
-       method :'GET',
- 
- 
-   })
-  
-         .then(response => response.json())
-         
-         .then((res)=>{
-           
-           if (res.success===true){
-             var email= res.message;
-             AsyncStorage.setItem('email',email);
-             console.log("sssssss");
-             navigation.navigate("Sallikna");////for test put it  profile insted of sallikna
 
-           }
-           else{
-            Alert.alert(
-              "errrrrr",
-              "Please check you Email address.",
-              [{ text: "Try again" }],
-              { cancelable: false }
-            );
-            console.log("fffffff");
-             alert(res.message);
-           }
-         })
- .done();
-        } */
-     //const { email, password } = this.state;
- 
-     
-    // Keyboard.dismiss();
-    // this.setState({ loading: true });
- 
-     // check with backend API or with some static data
-     /* if (email !== VALID_EMAIL) {
-       errors.push("email");
-     }
-     if (password !== VALID_PASSWORD) {
-       errors.push("password");
-     } */
- 
- 
-    /*  this.setState({ errors, loading: false });
- 
-     if (!errors.length) {
-       console.log("sssssss");
-     
-               navigation.navigate("Sallikna");
-    
-   
-     }
-     if (errors.length) {
-       console.log("fffffff");
-       Alert.alert(
-         "Error",
-         "Please check you Email address.",
-         [{ text: "Try again" }],
-         { cancelable: false }
-       );
-   
-     } */
-     
-  // }
 
 }
 

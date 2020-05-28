@@ -43,43 +43,15 @@ export default class Home extends Component {////////appreg
    
   }
 
-/*   registerForPushNotificationsAsync = async () => {
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-      }
-      token = await Notifications.getExpoPushTokenAsync();
-      console.log(token);
-      this.setState({ expoPushToken: token });//SAVE IN DB
-    } else {
-      alert('Must use physical device for Push Notifications');
-    }
-
-    if (Platform.OS === 'android') {
-      Notifications.createChannelAndroidAsync('default', {
-        name: 'default',
-        sound: true,
-        priority: 'max',
-        vibrate: [0, 250, 250, 250],
-      });
-    }
-  };
-
+  
   
   _handleNotification = notification => {
     Vibration.vibrate();
     console.log(notification);
     this.setState({ notification: notification });
   };
- */
-  sendPushNotification = async () => {
+ 
+  /* sendPushNotification = async () => {
     const message = {
       to: this.state.expoPushToken,//ETOKEN
       sound: 'default',
@@ -97,7 +69,7 @@ export default class Home extends Component {////////appreg
       },
       body: JSON.stringify(message),
     });
-  };
+  }; */
 
    handleDone (ID) {
 
@@ -193,7 +165,8 @@ export default class Home extends Component {////////appreg
     //const { done }  ;
   
    // this.registerForPushNotificationsAsync();
-   // this._notificationSubscription = Notifications.addListener(this._handleNotification);
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+
     return fetch('http://192.168.43.137/Server/Home-Company.php', {
       method: 'POST',
        headers: {
@@ -213,13 +186,20 @@ export default class Home extends Component {////////appreg
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        if (responseJson =='no result!!!'){
+          Alert.alert(responseJson);
+        }
+        else {
         this.setState({
          
           isLoading: false,
           dataSource: responseJson
-        }, function() {
+        },
+
+         function() {
+         
           // In this block you can do something with new state.
-        });
+        });}
       })
       .catch((error) => {
         console.error(error);
@@ -249,13 +229,17 @@ export default class Home extends Component {////////appreg
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        if (responseJson =='no result!!!'){
+          Alert.alert(responseJson);
+        }
+        else {
         this.setState({
           isRefreshing: false,
           isLoading: false,
           dataSource: responseJson
         }, function() {
           // In this block you can do something with new state.
-        });
+        });}
       })
       .catch((error) => {  this.setState({ isRefreshing: false, error: 'Something just went wrong' })
         console.error(error);

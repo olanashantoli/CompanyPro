@@ -87,7 +87,7 @@ export default class Home2 extends Component {////////appreg
               // In this block you can do something with new state.
             });
             console.log("ooooooooooooooooooooo");
-       console.log(responseJson);
+       console.log(responseJson);//try  t 
          }).catch((error) => {
            Alert.alert(
              "Error in json",
@@ -189,13 +189,19 @@ export default class Home2 extends Component {////////appreg
 );
 
   }
+  
+  _handleNotification = notification => { //rec noti
+    Vibration.vibrate();
+    console.log(notification);
+    this.setState({ notification: notification });
+  };
  
   componentDidMount() {
   
     //const { done }  ;
   
   //  this.registerForPushNotificationsAsync();
-   // this._notificationSubscription = Notifications.addListener(this._handleNotification);
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
     return fetch('http://192.168.43.137/Server/new.php', {
       method: 'POST',
        headers: {
@@ -215,13 +221,17 @@ export default class Home2 extends Component {////////appreg
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        if (responseJson =='no result!!!'){
+          Alert.alert("there's no any requests !!");
+        }
+        else {
         this.setState({
          
           isLoading: false,
           dataSource: responseJson
         }, function() {
           // In this block you can do something with new state.
-        });
+        });}
       })
       .catch((error) => {
         console.error(error);
@@ -251,13 +261,17 @@ export default class Home2 extends Component {////////appreg
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        if (responseJson =='no result!!!'){
+          Alert.alert(responseJson);
+        }
+        else {
         this.setState({
           isRefreshing: false,
           isLoading: false,
           dataSource: responseJson
         }, function() {
           // In this block you can do something with new state.
-        });
+        });}
       })
       .catch((error) => {  this.setState({ isRefreshing: false, error: 'Something just went wrong' })
         console.error(error);
@@ -299,7 +313,8 @@ export default class Home2 extends Component {////////appreg
       return (
    
   <View style={styles.MainContainer}>
-    
+  
+         
          <FlatList
          
             data={ this.state.dataSource }
