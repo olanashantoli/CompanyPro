@@ -43,7 +43,17 @@ export default class Home extends Component {////////appreg
    
   }
 
-  
+   
+  guid() {
+    return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+        this.s4() + '-' + this.s4() + this.s4() + this.s4();
+}
+
+s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+}
   
   _handleNotification = notification => {
     Vibration.vibrate();
@@ -164,8 +174,9 @@ export default class Home extends Component {////////appreg
   componentDidMount() {
     //const { done }  ;
   
+  
    // this.registerForPushNotificationsAsync();
-    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+   // this._notificationSubscription = Notifications.addListener(this._handleNotification);
 
     return fetch('http://192.168.43.137/Server/Home-Company.php', {
       method: 'POST',
@@ -233,6 +244,7 @@ export default class Home extends Component {////////appreg
           Alert.alert(responseJson);
         }
         else {
+      //    console.log(responseJson);
         this.setState({
           isRefreshing: false,
           isLoading: false,
@@ -267,6 +279,7 @@ export default class Home extends Component {////////appreg
 
 
    render() {
+       const { loading } = this.state;
       const { navigation } = this.props;
       const {  errors } = this.state;
       const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
@@ -277,10 +290,43 @@ export default class Home extends Component {////////appreg
           </View>
         );
       }
-   
+    /*   if ( this.state.dataSource.length){
+        return (
+       console.log("kkkkkkkkkkkk"),
+          <View style={styles.MainContainer}>
+            <Text bold white center>
+             {"\n"} {"\n"}
+                </Text>
+
+          <Text h2 bold>
+          NO ANY REQ 
+          </Text>
+         
+         
+
+          <Button gradient >
+              {loading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Text bold white center>
+                  Login
+                </Text>
+              )}
+            </Button>
+             refreshControl={
+              <RefreshControl
+                refreshing={this.state.isRefreshing}
+                onRefresh={this.onRefresh.bind(this)}
+                />}
+           </View>
+              
+              );
+      }
+     else{ */
       return (
-   
+       
   <View style={styles.MainContainer}>
+    
     
          <FlatList
          
@@ -319,7 +365,7 @@ export default class Home extends Component {////////appreg
             </TouchableOpacity>
            </View>
               }
-              keyExtractor = {(item, index) => index.toString()}
+              keyExtractor = {(item, index) => this.guid()}
               //   keyExtractor={(item, INDEX) => item.toString()}
         // keyExtractor={   (item, index) => index}
             extraData={this.state}
@@ -328,11 +374,13 @@ export default class Home extends Component {////////appreg
                 refreshing={this.state.isRefreshing}
                 onRefresh={this.onRefresh.bind(this)}
                 />}
+           
            />
-      
+     
      </View>
               
       );
+           // }
     }
   }
  

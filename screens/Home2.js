@@ -21,7 +21,7 @@ import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
 
-const t='';
+const t='ExponentPushToken[KGN1fCEqtnNI7XN_mGyYw_]';
 
 export default class Home2 extends Component {////////appreg
  
@@ -36,21 +36,66 @@ export default class Home2 extends Component {////////appreg
       isLoading: true,
       isRefreshing: false, //for pull to refresh
       token:'',
+      tokn:'',//////////////////////
      // expoPushToken: '',
       notification: {},
     }
    
   }
 
+
+   
+  guid() {
+    return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+        this.s4() + '-' + this.s4() + this.s4() + this.s4();
+}
+
+s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+}
+  
+  registerForPushNotificationsAsync = async () => {//3
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = await Notifications.getExpoPushTokenAsync();
+      
+      this.setState({ expoPushToken: token });
+      console.log(token);
+      //===console.log(this.state.expoPushToken);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.createChannelAndroidAsync('default', {
+        name: 'default',
+        sound: true,
+        priority: 'max',
+        vibrate: [0, 250, 250, 250],
+      });
+    }
+  };
+
   sendPushNotification = async () => {
     const message = {
-      to: t,//ETOKEN
-      sound: 'default',
+      to: 'ExponentPushToken[KGN1fCEqtnNI7XN_mGyYw_]',//t,//ETOKEN//this.state.tokn
+      sound: 'true',
       title: 'ACCEPTED ',
       body: 'just wait!',
       data: { data: 'goes here' },
       _displayInForeground: true,
-    };
+    };//regpush get tok// send
     const response = await fetch('https://exp.host/--/api/v2/push/send', {
       method: 'POST',
       headers: {
@@ -61,7 +106,7 @@ export default class Home2 extends Component {////////appreg
       body: JSON.stringify(message),
     });
   };
-
+/*
   gettok(ID){
     fetch('http://192.168.43.137/Server/tok1.php', {
       method: 'POST',
@@ -87,7 +132,8 @@ export default class Home2 extends Component {////////appreg
               // In this block you can do something with new state.
             });
             console.log("ooooooooooooooooooooo");
-       console.log(responseJson);//try  t 
+              expoPushToken: responseJson,
+              console.log(responseJson,'this is reseiver');//try  t 
          }).catch((error) => {
            Alert.alert(
              "Error in json",
@@ -98,9 +144,9 @@ export default class Home2 extends Component {////////appreg
            console.error(error);
          }); 
   }
-
+*/
    handleAccept(ID) {
-    this.gettok(ID);//add ID
+   // this.gettok(ID);//add ID
 
    fetch('http://192.168.43.137/Server/Company_Accept.php', {
      method: 'POST',
@@ -200,7 +246,7 @@ export default class Home2 extends Component {////////appreg
   
     //const { done }  ;
   
-  //  this.registerForPushNotificationsAsync();
+    this.registerForPushNotificationsAsync();
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
     return fetch('http://192.168.43.137/Server/new.php', {
       method: 'POST',
@@ -352,7 +398,7 @@ export default class Home2 extends Component {////////appreg
             </TouchableOpacity>
            </View>
               }
-            keyExtractor={(item) => item.toString()}
+            keyExtractor={(item,index) => this.guid()}
             extraData={this.state}
             refreshControl={
               <RefreshControl

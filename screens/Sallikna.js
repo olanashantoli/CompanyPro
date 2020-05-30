@@ -23,6 +23,7 @@ import Profile from './Profile';
 import Logout from './Logout';
 import Home2 from './Home2';
 import OurMap from './OurMap';
+import StoreLocation from './StoreLocation';//StoreLocation
 //statistics  like manage vehicles
 import { theme } from "../constants";
 
@@ -140,7 +141,23 @@ const Screen5_StackNavigator = createStackNavigator({
   },
 });
 
- const Screen6_StackNavigator = createStackNavigator({
+const Screen6_StackNavigator = createStackNavigator({
+  //All the screen from the Screen3 will be indexed here
+  Fiveth: {
+    screen: StoreLocation,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Store Company Location',
+      headerLeft: () => <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        height: theme.sizes.base * 5,
+        backgroundColor: '#8875ba',
+      },
+      headerTintColor: '#fff',
+    }),
+  },
+});
+
+ const Screen7_StackNavigator = createStackNavigator({
   //All the screen from the Screen3 will be indexed here
   Sixth: {
     screen: Logout,
@@ -197,9 +214,16 @@ const DrawerNavigatorExample = createDrawerNavigator({
       drawerLabel: 'Join our team',
     },
   },
-  Logout: {
+  StoreLocation: {
     //Title
     screen: Screen6_StackNavigator,
+    navigationOptions: {
+      drawerLabel: 'Store Company Location',
+    },
+  },
+  Logout: {
+    //Title
+    screen: Screen7_StackNavigator,
     navigationOptions: {
       drawerLabel: 'Logout',
     },

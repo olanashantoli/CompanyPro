@@ -1,7 +1,7 @@
 //This is an example of Tab inside Navigation Drawer in React Native//
 import React, { Component } from 'react';
 //import react in our code.
-import {  AppRegistry,StyleSheet, View, Text ,FlatList} from 'react-native';
+import {  AppRegistry,StyleSheet, View, Text ,FlatList,Alert} from 'react-native';
 // import all basic components
 import  MapView  from 'react-native-maps';
 import { Marker } from 'react-native-maps';
@@ -13,7 +13,7 @@ import { Marker } from 'react-native-maps';
 export default class OurMap extends Component  {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       loading: true,
        error: null,
@@ -24,7 +24,8 @@ export default class OurMap extends Component  {
         longitude: 35.1901304,   
         latitudeDelta: 0.0922,
        longitudeDelta: 0.0421
-        }
+        },
+        dataSource:[],
      /*  latitude: null,
       longitude: null,   
       latitudeDelta: 0.0922,
@@ -32,12 +33,25 @@ export default class OurMap extends Component  {
    */
     };
   }
+
   
+ //////////////////// this.storeloc();
+
+
   //Location.requestPermissionsAsync();
    componentDidMount() {
+    //const granted = await PermissionsAndroid.check( PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION );
+
+   /*  if (granted) {
+      console.log( "You can use the ACCESS_FINE_LOCATION" )
+    } 
+    else {
+      console.log( "ACCESS_FINE_LOCATION permission denied" )
+    } */
     //const { done }  ;
-  
+   /* 
     this.watchId = navigator.geolocation.watchPosition(
+      
       (position) => {
         this.setState({
           latitude: position.coords.latitude,
@@ -51,38 +65,41 @@ export default class OurMap extends Component  {
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 , distanceFilter: 10},
     );
-    return fetch('http://192.168.43.137/Server/Home-Cus.php', {
+ */
+   //بقدر احذ اللي فوق ؟؟
+
+    return fetch('http://192.168.43.137/Server/allord.php', {
       method: 'POST',
        headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       }, 
       body: JSON.stringify({
-    
-     ///   name: this.state.username,
         email: global.Email,
-        latitude: this.state.latitude,
-        longitude:this.state.longitude
-       // Done :  global.Done,
-    
-     ////   password: this.state.password 
+
     
       })
     
-    })
-      .then((response) => response.json())
+    }).then((response) => response.json())
       .then((responseJson) => {
-        this.setState({
+       // console.log(responseJson);
+        console.log(   responseJson);
          
+console.log('hi');
+        this.setState({
+            
           isLoading: false,
           dataSource: responseJson
-        }, function() {
+        },function() {
+               
           // In this block you can do something with new state.
         });
+       // console.log(  this.state.dataSource[1].lat);   
       })
       .catch((error) => {
         console.error(error);
-      });
+      }); 
+
       
   }
  
@@ -92,11 +109,20 @@ componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
   }
 
+  guid() {
+    return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+        this.s4() + '-' + this.s4() + this.s4() + this.s4();
+}
 
+s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+}
 
   render() {
-    var x = parseFloat( this.state.latitude);
-    var y = global.LNG;
+ //   var x = parseFloat( this.state.latitude);
+ //   var y = global.LNG;
  
 
   
@@ -170,22 +196,19 @@ componentWillUnmount() {
     
     >
   
-         <Marker coordinate = {{latitude : 32.520400 ,longitude:35.104000}}
-        
-         title={"company x"}
-         description={"BMW company"}/> 
+  { this.state.dataSource.map((item)  => ( //key
+    <Marker key={this.guid()}
+      pinColor = { "purple"} 
+      coordinate={{latitude:parseFloat(item.LAT),longitude:parseFloat(item.LNG)}}  //string
+      title={ " Request ID :"+ item.ID}
+      description={"Plate # "+item.Vehicle+"    Status :"+ item.Status}
+     
+    />
+  
+  ))
+  
+  }
 
-         <Marker coordinate = {{latitude : 32.56 ,longitude:35.3}}
-         pinColor = {"purple"} // any color
-         title={"user 1"}
-         description={"Break_Down"}/> 
-
-        <Marker coordinate = {{latitude : 32.3988 ,longitude:35.1}}
-         pinColor = {"purple"} // any color
-         title={"user2"}
-         description={"recovery"}/> 
-
-       
  
     </MapView> 
 

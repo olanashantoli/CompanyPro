@@ -14,7 +14,7 @@ import {
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
-import { Notifications } from 'expo';
+import { Notifications } from 'expo'; //1
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
@@ -25,14 +25,14 @@ export default class Login extends Component {
     super(props);
     this.state={email:'', password:'', errors: [],
     isLoading: true,
-    //token:'',
-    expoPushToken: '',
+    token:'',
+    expoPushToken: '',//2
     notification: {},
   };
 
   }
 
-  registerForPushNotificationsAsync = async () => {
+  registerForPushNotificationsAsync = async () => {//3
     if (Constants.isDevice) {
       const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
       let finalStatus = existingStatus;
@@ -48,7 +48,7 @@ export default class Login extends Component {
       
       this.setState({ expoPushToken: token });
       console.log(token);
-      //===console.log(this.state.expoPushToken);
+      console.log(this.state.expoPushToken);
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -73,7 +73,7 @@ export default class Login extends Component {
     console.log(notification);
     this.setState({ notification: notification });
   };
- 
+  
   
 
   st(){
@@ -158,7 +158,7 @@ export default class Login extends Component {
          });
 
         
-    this.registerForPushNotificationsAsync();//save token
+    this.registerForPushNotificationsAsync();//save token //4
     this._notificationSubscription = Notifications.addListener(this._handleNotification);// rec noti
     this.st();
     
