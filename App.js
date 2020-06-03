@@ -8,6 +8,8 @@ import Navigation from "./navigation";
 import { Block } from "./components";
 import { MapView } from "expo";
 import { Notifications } from 'expo';
+
+
 // import all used images
 const images = [
   require("./assets/icons/back.png"),
@@ -22,6 +24,7 @@ export default class App extends React.Component {
 
 
   state = {
+    
     isLoadingComplete: false
   };
 
@@ -39,6 +42,7 @@ export default class App extends React.Component {
 
   
   render() {
+    
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading

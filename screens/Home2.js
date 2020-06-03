@@ -19,7 +19,7 @@ import { theme } from "../constants";
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-
+import OneSignal from 'react-native-onesignal'; // Import package from node modules
 
 const t='ExponentPushToken[KGN1fCEqtnNI7XN_mGyYw_]';
 
@@ -27,6 +27,9 @@ export default class Home2 extends Component {////////appreg
  
    constructor(props) {
     super(props);
+  
+   // OneSignal.enableSound(true);
+   // OneSignal.enableVibrate(true);
     this.state = {
     // email: global.Email;///////////
     email: '',
@@ -43,8 +46,63 @@ export default class Home2 extends Component {////////appreg
    
   }
 
+/* 
+  componentWillUnmount() {
+    OneSignal.removeEventListener('received', this.onReceived);
+    OneSignal.removeEventListener('opened', this.onOpened);
+    OneSignal.removeEventListener('ids', this.onIds);
+  }
 
-   
+  onReceived(notification) {
+    console.log("Notification received: ", notification);
+  }
+
+  onOpened(openResult) {
+    console.log('Message: ', openResult.notification.payload.body);
+    console.log('Data: ', openResult.notification.payload.additionalData);
+    console.log('isActive: ', openResult.notification.isAppInFocus);
+    console.log('openResult: ', openResult);
+  }
+
+  onIds(device) {
+    console.log('Device info: ', device);
+  }
+
+
+  sendNotification(data, id){
+let headers = {
+  'Content-Type': 'application/json; charset=utf-8',
+  Authorization: "Basic 'NGJjZWY5YzMtOTRlOS00NjZKLWFlMjMtNDc2M2U3ODgzMTg0'"
+};
+ let endpoint = 'https://onesignal.com/api/v1/notifications';
+ let params={
+method:'POST',
+headers:headers,
+body:JSON.stringify({
+app_id: "ed71d85c-28b8-4ad8-ac52-50cc9d065725",
+filters:[
+{
+field:'tag',
+key:'key',
+relation: '=',
+valu : global.Email,
+
+},
+],
+headings:{en: 'Sleep Update'},
+contents:{en:data},
+url : 'https://something.any',
+}),
+
+
+ };
+
+ fetch(endpoint,params).then(res => console.log(res));
+
+ */
+
+ // }
+
   guid() {
     return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
         this.s4() + '-' + this.s4() + this.s4() + this.s4();
@@ -55,7 +113,7 @@ s4() {
         .toString(16)
         .substring(1);
 }
-  
+ /* 
   registerForPushNotificationsAsync = async () => {//3
     if (Constants.isDevice) {
       const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
@@ -106,7 +164,7 @@ s4() {
       body: JSON.stringify(message),
     });
   };
-/*
+
   gettok(ID){
     fetch('http://192.168.43.137/Server/tok1.php', {
       method: 'POST',
@@ -174,8 +232,11 @@ s4() {
           console.error(error);
         }); 
       
+
+      //  this.sendNotification(data, id);
+
         
-        this.sendPushNotification();
+       // this.sendPushNotification();
       } 
 
       
@@ -243,11 +304,21 @@ s4() {
   };
  
   componentDidMount() {
+
+    OneSignal.init("ed71d85c-28b8-4ad8-ac52-50cc9d065725", {kOSSettingsKeyAutoPrompt: false, 
+      kOSSettingsKeyInAppLaunchURL: false}); // Start OneSignal
+
+OneSignal.inFocusDisplaying(2); // Show native notifications even if the app is open 
+
+    OneSignal.addEventListener('received', this.onReceived);
+    OneSignal.addEventListener('opened', this.onOpened);
+
+    OneSignal.addEventListener('ids', this.onIds);
   
     //const { done }  ;
   
-    this.registerForPushNotificationsAsync();
-    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+    //this.registerForPushNotificationsAsync();
+    //this._notificationSubscription = Notifications.addListener(this._handleNotification);
     return fetch('http://192.168.43.137/Server/new.php', {
       method: 'POST',
        headers: {
