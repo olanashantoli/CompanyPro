@@ -21,7 +21,7 @@
     "formik": "^2.1.4",
     "link": "^0.1.5",
     "native-base": "^2.13.12",
-    "pubnub": "^4.27.6",
+    "pubnub": "^4.37.0",
     "pubnub-react": "^2.0.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
